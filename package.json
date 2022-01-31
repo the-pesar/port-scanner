@@ -1,6 +1,6 @@
 {
   "name": "pscanner",
-  "version": "1.1.2",
+  "version": "1.1.4",
   "description": "Port Scanner With NodeJS",
   "main": "index.js",
   "type": "commonjs",
@@ -16,8 +16,5 @@
   "bugs": {
     "url": "https://github.com/pesarism/port-scanner/issues"
   },
-  "homepage": "https://github.com/pesarism/port-scanner#readme",
-  "dependencies": {
-    "pscanner": "^1.0.0"
-  }
+  "homepage": "https://github.com/pesarism/port-scanner#readme"
 }
