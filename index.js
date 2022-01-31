@@ -1,4 +1,4 @@
-import { Socket } from "net";
+const { Socket } = require("net");
 
 function portScan(host, port, cb) {
   return new Promise((resolve) => {
@@ -44,4 +44,4 @@ function portScan(host, port, cb) {
   });
 }
 
-export default portScan;
+module.exports = portScan;
