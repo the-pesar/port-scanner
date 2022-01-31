@@ -1,7 +1,7 @@
 {
   "name": "pscanner",
-  "version": "1.1.4",
-  "description": "Port Scanner With NodeJS",
+  "version": "1.1.5",
+  "description": "Port Scanner 👀",
   "main": "index.js",
   "type": "commonjs",
   "scripts": {
@@ -16,5 +16,13 @@
   "bugs": {
     "url": "https://github.com/pesarism/port-scanner/issues"
   },
-  "homepage": "https://github.com/pesarism/port-scanner#readme"
+  "homepage": "https://github.com/pesarism/port-scanner#readme",
+  "keywords": [
+    "scan",
+    "scanner",
+    "portscanner",
+    "port",
+    "net",
+    "tcp"
+  ]
 }

@@ -35,7 +35,8 @@ other features:
 ```javascript
 const portScan = require("pscanner");
 
-portScan("8.8.8.8:80", (isOpen, port) => console.log(isOpen, port)); // true 80
+portScan("8.8.8.8:80", (isOpen, port) => console.log(isOpen, port)); 
+// true 80
 
 await portScan("8.8.8.8:81"); // false
 ```
