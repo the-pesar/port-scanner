@@ -18,8 +18,6 @@
   },
   "homepage": "https://github.com/pesarism/port-scanner#readme",
   "dependencies": {
-    "node-port-scanner": "^3.0.1",
-    "pscanner": "^1.0.0",
-    "tcp-exists": "^1.3.0"
+    "pscanner": "^1.0.0"
   }
 }
