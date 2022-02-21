@@ -1,22 +1,36 @@
 const { Socket } = require("net");
 
-function portScan(host, port, cb) {
+function portScan({ host, port, timeout = 200, callback }) {
   return new Promise((resolve) => {
-    if (!host || typeof host !== "string") return;
+    const regex =
+      /^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/;
 
-    if (arguments.length <= 2) {
-      if (typeof port === "function" || port === undefined) {
-        cb = port;
-        const tmp = host.split(":");
-        host = tmp[0];
-        port = parseInt(tmp[1]);
-      }
+    if (!regex.test(host)) {
+      throw new Error("host address is invalid");
     }
 
-    if (port === undefined || port < 1 || port > 65535) {
-      resolve(false);
-      cb && cb(false, port);
-      return;
+    if (host === undefined) {
+      throw new Error("host address is required");
+    }
+
+    if (typeof host !== "string") {
+      throw new TypeError("host address type must be string");
+    }
+
+    if (port === undefined) {
+      throw new Error("port number is required");
+    }
+
+    if (isNaN(port)) {
+      throw new TypeError("port number type must be number");
+    }
+
+    if (isNaN(timeout)) {
+      throw new TypeError("timeout number type must be number");
+    }
+
+    if (callback && typeof callback !== "function") {
+      throw new TypeError("callback function type must be function");
     }
 
     const socket = new Socket();
@@ -24,23 +38,22 @@ function portScan(host, port, cb) {
     socket.on("connect", () => {
       socket.destroy();
       resolve(true);
-      cb && cb(true, port);
+      callback && callback(true, port);
     });
 
     socket.on("error", () => {
       socket.destroy();
       resolve(false);
-      cb && cb(false, port);
+      callback && callback(false, port);
     });
 
     socket.on("timeout", () => {
       socket.destroy();
       resolve(false);
-      cb && cb(false, port);
+      callback && callback(false, port);
     });
-
-    socket.setTimeout(200);
-    socket.connect(port, host);
+    socket.setTimeout(parseInt(timeout));
+    socket.connect(parseInt(port), host);
   });
 }
 

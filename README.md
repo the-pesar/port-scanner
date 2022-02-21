@@ -11,32 +11,38 @@ example:
 ```javascript
 const portScan = require("pscanner");
 
-const app = async () => {
-  const isOpen = await portScan("8.8.8.8", 80);
+const main = async () => {
+  const isOpen = await portScan({ host: "8.8.8.8", port: 80 });
   console.log(isOpen); // true
 };
 
-app();
+main();
 ```
 
-support CallBack:
+support CallBack function:
 
 ```javascript
 const portScan = require("pscanner");
 
-portScan("8.8.8.8", 80, (isOpen, port) => {
-  console.log(isOpen, port);
-  // true 80
+portScan({
+  host: "8.8.8.8",
+  port: 81,
+  callback: (isOpen, port) => {
+    console.log(isOpen, port);
+    // false 81
+  },
 });
 ```
 
-other features:
+set timeout connection (default 200ms):
 
 ```javascript
 const portScan = require("pscanner");
 
-portScan("8.8.8.8:80", (isOpen, port) => console.log(isOpen, port)); 
-// true 80
+const main = async () => {
+  const isOpen = await portScan({ host: "8.8.8.8", port: 80, timeout: 100 });
+  console.log(isOpen); // true
+};
 
-await portScan("8.8.8.8:81"); // false
+main();
 ```
