@@ -1,59 +1,66 @@
 const { Socket } = require("net");
 
+const regex = /^(?!0)(?!.*\.$)((1?\d?\d|25[0-5]|2[0-4]\d)(\.|$)){4}$/;
+
+function validation({ host, port, timeout = 200, callback }) {
+  if (regex.test(host) === false) {
+    return { valid: false, error: "host format is invalid" };
+  }
+
+  if (
+    typeof port !== "undefined" &&
+    (port > 65536 || port < 0 || typeof port !== "number")
+  ) {
+    return {
+      valid: false,
+      error: "Port should be >= 0 and < 65536 and type of number",
+    };
+  }
+
+  if (
+    typeof timeout !== "undefined" &&
+    (timeout < 0 || typeof timeout !== "number")
+  ) {
+    return {
+      valid: false,
+      error: "timeout should be larger than 0 and type of number",
+    };
+  }
+
+  if (typeof callback !== "undefined" && typeof callback !== "function") {
+    return { valid: false, error: "callback should be a function" };
+  }
+
+  return { valid: true, error: null };
+}
+
 function portScan({ host, port, timeout = 200, callback }) {
-  return new Promise((resolve) => {
-    const regex =
-      /^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/;
-
-    if (!regex.test(host)) {
-      throw new Error("host address is invalid");
-    }
-
-    if (host === undefined) {
-      throw new Error("host address is required");
-    }
-
-    if (typeof host !== "string") {
-      throw new TypeError("host address type must be string");
-    }
-
-    if (port === undefined) {
-      throw new Error("port number is required");
-    }
-
-    if (isNaN(port)) {
-      throw new TypeError("port number type must be number");
-    }
-
-    if (isNaN(timeout)) {
-      throw new TypeError("timeout number type must be number");
-    }
-
-    if (callback && typeof callback !== "function") {
-      throw new TypeError("callback function type must be function");
+  return new Promise((resolve, reject) => {
+    const vResult = validation({ host, port, timeout, callback });
+    if (vResult.valid === false) {
+      reject(vResult.error);
+      return;
     }
 
     const socket = new Socket();
-
     socket.on("connect", () => {
       socket.destroy();
       resolve(true);
       callback && callback(true, port);
     });
-
     socket.on("error", () => {
       socket.destroy();
       resolve(false);
       callback && callback(false, port);
     });
-
     socket.on("timeout", () => {
       socket.destroy();
       resolve(false);
       callback && callback(false, port);
     });
-    socket.setTimeout(parseInt(timeout));
-    socket.connect(parseInt(port), host);
+
+    socket.setTimeout(timeout);
+    socket.connect(port, host);
   });
 }
 

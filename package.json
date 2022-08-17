@@ -1,6 +1,6 @@
 {
   "name": "pscanner",
-  "version": "2.0.0",
+  "version": "2.0.2",
   "description": "Port Scanner 👀",
   "main": "index.js",
   "type": "commonjs",
