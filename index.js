@@ -2,7 +2,7 @@ const { Socket } = require("net");
 
 const regex = /^(?!0)(?!.*\.$)((1?\d?\d|25[0-5]|2[0-4]\d)(\.|$)){4}$/;
 
-function validation({ host, port, timeout = 200, callback }) {
+function validation({ host, port, timeout, callback }) {
   if (regex.test(host) === false) {
     return { valid: false, error: "host format is invalid" };
   }
@@ -34,7 +34,7 @@ function validation({ host, port, timeout = 200, callback }) {
   return { valid: true, error: null };
 }
 
-function portScan({ host, port, timeout = 200, callback }) {
+function portScanner({ host, port, timeout = 200, callback }) {
   return new Promise((resolve, reject) => {
     const vResult = validation({ host, port, timeout, callback });
     if (vResult.valid === false) {
@@ -43,16 +43,19 @@ function portScan({ host, port, timeout = 200, callback }) {
     }
 
     const socket = new Socket();
+
     socket.on("connect", () => {
       socket.destroy();
       resolve(true);
       callback && callback(true, port);
     });
+
     socket.on("error", () => {
       socket.destroy();
       resolve(false);
       callback && callback(false, port);
     });
+
     socket.on("timeout", () => {
       socket.destroy();
       resolve(false);
@@ -64,4 +67,4 @@ function portScan({ host, port, timeout = 200, callback }) {
   });
 }
 
-module.exports = portScan;
+module.exports = portScanner;
