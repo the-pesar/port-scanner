@@ -40,7 +40,11 @@ set timeout connection (default 200ms):
 const portScan = require("pscanner");
 
 const main = async () => {
-  const isOpen = await portScan({ host: "8.8.8.8", port: 443, timeout: 100 });
+  const isOpen = await portScan({
+    host: "8.8.8.8",
+    port: 443,
+    timeout: 100,
+  });
   console.log(isOpen); // true
 };
 
