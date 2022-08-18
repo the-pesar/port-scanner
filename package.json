@@ -9,7 +9,7 @@
     "url": "git+https://github.com/pesarism/port-scanner.git"
   },
   "author": "Pesar",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/pesarism/port-scanner/issues"
   },
